@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <cctype>
+
+using namespace std;
+
+int main ( )
+{
+	string input, output;			// Filenames
+    
+	cout << "Enter an input file containing sentences: ";
+	cin >> input;
+	ifstream infile("/Users/sepultraslan/Desktop/hw6/beatles.txt");		// Input file
+	if (!infile) {
+		cerr << "Unable to open " << input << endl;
+		return(1);
+	}
+    
+	cout << "Enter an output file: ";
+	cin >> output;
+	ofstream outfile("/Users/sepultraslan/Desktop/hw6/outputlast.txt");	// Output file
+	if (!outfile) {
+		cerr << "Unable to open " << output << endl;
+		return(2);
+	}
+    
+	int s = 0;			// Sentence char count
+	while (!infile.eof()) {		// Until all chars read
+		char ch;		// Char read
+		infile.get(ch);
+		if (infile.eof()) break;  // Done
+        
+		if (isalpha(ch)) {	// If alphabet char
+			if (s++ == 0) {	// Starting sentence
+				outfile << (char) toupper(ch);  // Upper case
+			} else {
+				outfile << (char) tolower(ch);  // Otherwise lower
+			}
+            
+		} else {		// Non-alphabet char
+			if (ch == '.') s = 0;	// End sentence
+			outfile << ch;	// Echo other char
+		}
+	}
+	return(0);
+}
